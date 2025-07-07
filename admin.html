@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin - Manage Drive Files</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .toast {
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 50;
+      display: none;
+    }
+    .toast.show {
+      display: block;
+      opacity: 1;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+  <!-- 🔒 Auth Check -->
+  <script>
+    if (!localStorage.getItem("authenticated")) {
+      window.location.href = "login.html";
+    }
+  </script>
+
+  <div class="max-w-4xl mx-auto py-10 px-4">
+    <!-- Header with Logout -->
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-bold text-blue-700">📁 Manage School Resources</h1>
+      <button onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Logout</button>
+    </div>
+
+    <!-- Upload Section -->
+    <div class="bg-white p-4 rounded shadow mb-6">
+      <h2 class="text-xl font-semibold mb-2">Upload New File</h2>
+      <input type="file" id="uploadFile" class="block w-full border p-2 rounded mb-3" />
+      <button onclick="uploadFile()" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Upload</button>
+    </div>
+
+    <!-- File List Section -->
+    <div id="file-list" class="space-y-4"></div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast bg-blue-600 text-white px-6 py-3 rounded shadow-lg"></div>
+
+  <script>
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxTQ6KpDFIRJyiEGB0iH_TNMqiO3UuD8VfN8-YOZWPDyJKbF1lBc1D0joK5X7WxbY-D/exec";
+
+    // ▶️ Auto-load
+    window.onload = () => fetchFiles();
+
+    // ✅ Toast Message
+    function showToast(message, type = "info") {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.className = `toast show ${type === "error" ? "bg-red-600" : "bg-green-600"} text-white`;
+      setTimeout(() => toast.classList.remove("show"), 3000);
+    }
+
+    // 📄 Fetch Files
+    async function fetchFiles() {
+      try {
+        const res = await fetch(WEB_APP_URL);
+        const files = await res.json();
+
+        const listContainer = document.getElementById("file-list");
+        listContainer.innerHTML = "";
+
+        if (!Array.isArray(files) || files.length === 0) {
+          listContainer.innerHTML = "<p class='text-center text-gray-500'>No files found.</p>";
+          return;
+        }
+
+        files.forEach(file => {
+          const card = document.createElement("div");
+          card.className = "bg-white p-4 rounded shadow flex justify-between items-center";
+
+          card.innerHTML = `
+            <div>
+              <p class="font-semibold">${file.name}</p>
+              <a href="${file.url}" target="_blank" class="text-blue-600 underline text-sm">Open</a>
+            </div>
+            <button onclick="deleteFile('${file.id}')" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-sm">Delete</button>
+          `;
+          listContainer.appendChild(card);
+        });
+      } catch (err) {
+        showToast("❌ Failed to fetch files", "error");
+        console.error(err);
+      }
+    }
+
+    // ❌ Delete File
+    async function deleteFile(fileId) {
+      if (!confirm("Are you sure you want to delete this file?")) return;
+
+      try {
+        const res = await fetch(`${WEB_APP_URL}?delete=${fileId}`);
+        const msg = await res.text();
+        showToast(msg.includes("✅") ? msg : "❌ Delete failed", msg.includes("✅") ? "info" : "error");
+        fetchFiles();
+      } catch (err) {
+        showToast("❌ Failed to delete file", "error");
+        console.error(err);
+      }
+    }
+
+    // ⬆️ Upload File
+    async function uploadFile() {
+      const fileInput = document.getElementById("uploadFile");
+      if (fileInput.files.length === 0) {
+        showToast("⚠️ Please select a file", "error");
+        return;
+      }
+
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+
+      reader.onload = async function (e) {
+        const base64 = e.target.result.split(',')[1];
+
+        const formData = new FormData();
+        formData.append("fileName", file.name);
+        formData.append("mimeType", file.type || "application/octet-stream");
+        formData.append("base64", base64);
+
+        try {
+          const res = await fetch(WEB_APP_URL, {
+            method: "POST",
+            body: formData
+          });
+
+          const msg = await res.text();
+          showToast(msg.includes("✅") ? msg : "❌ Upload failed", msg.includes("✅") ? "info" : "error");
+          fileInput.value = "";
+          fetchFiles();
+        } catch (err) {
+          showToast("❌ Upload failed", "error");
+          console.error(err);
+        }
+      };
+
+      reader.readAsDataURL(file);
+    }
+
+    // 🔓 Logout
+    function logout() {
+      localStorage.removeItem("authenticated");
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>

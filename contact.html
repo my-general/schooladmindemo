@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact - My School</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans">
+
+  <!-- Navbar -->
+  <header class="bg-white shadow-md">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center">
+      <h1 class="text-2xl font-bold text-blue-700 mb-2 sm:mb-0">My School</h1>
+      <nav class="flex flex-wrap justify-center gap-2 sm:gap-4 text-sm">
+        <a href="index.html" class="hover:text-blue-700">Home</a>
+        <a href="about.html" class="hover:text-blue-700">About</a>
+        <a href="admissions.html" class="hover:text-blue-700">Admissions</a>
+        <a href="career.html" class="hover:text-blue-700">Career</a>
+        <a href="gallery.html" class="hover:text-blue-700">Gallery</a>
+        <a href="contact.html" class="text-blue-700 font-semibold">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Header Section -->
+  <section class="bg-blue-700 text-white py-10 px-4 text-center">
+    <h2 class="text-3xl font-bold mb-2">Get in Touch</h2>
+    <p class="text-base md:text-lg max-w-2xl mx-auto">
+      We'd love to hear from you! Whether you have questions, feedback, or partnership inquiries.
+    </p>
+  </section>
+
+  <!-- Contact Info + Map -->
+  <section class="py-12 px-4 bg-white">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+      
+      <!-- Contact Info -->
+      <div>
+        <h3 class="text-xl font-semibold mb-4">📍 Our School Address</h3>
+        <p>My School<br>123 Education Lane,<br>Hyderabad, Telangana – 500001</p>
+
+        <h3 class="text-xl font-semibold mt-6 mb-2">📞 Contact Details</h3>
+        <p><strong>Phone:</strong> +91 98765 43210</p>
+        <p><strong>Email:</strong> contact@myschool.edu.in</p>
+      </div>
+
+      <!-- Google Map Embed -->
+      <div>
+        <iframe class="w-full h-64 rounded shadow"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3806.123456789!2d78.4867!3d17.385044!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb9abc1234567%3ASchool+Name!5e0!3m2!1sen!2sin!4v1234567890"
+          allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Contact Form -->
+  <section class="py-12 px-4 bg-gray-50">
+    <div class="max-w-3xl mx-auto">
+      <h3 class="text-2xl font-semibold mb-6 text-center">Send Us a Message</h3>
+
+      <form name="contact" method="POST" data-netlify="true" class="space-y-6 bg-white p-6 rounded-lg shadow">
+        <input type="hidden" name="form-name" value="contact" />
+
+        <div>
+          <label class="block mb-1 font-medium">Your Name</label>
+          <input type="text" name="name" required
+                 class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+
+        <div>
+          <label class="block mb-1 font-medium">Email</label>
+          <input type="email" name="email" required
+                 class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+
+        <div>
+          <label class="block mb-1 font-medium">Your Message</label>
+          <textarea name="message" rows="5" required
+                    class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+        </div>
+
+        <div class="text-center">
+          <button type="submit"
+                  class="bg-blue-600 text-white font-semibold px-6 py-3 rounded hover:bg-blue-700 transition">
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-6 text-center text-sm px-4">
+    <p>&copy; 2025 My School. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

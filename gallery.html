@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery - My School</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans">
+
+  <!-- Navbar -->
+  <header class="bg-white shadow-md">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center">
+      <h1 class="text-2xl font-bold text-blue-700 mb-2 sm:mb-0">My School</h1>
+      <nav class="flex flex-wrap justify-center gap-2 sm:gap-4 text-sm">
+        <a href="index.html" class="hover:text-blue-700">Home</a>
+        <a href="about.html" class="hover:text-blue-700">About</a>
+        <a href="admissions.html" class="hover:text-blue-700">Admissions</a>
+        <a href="career.html" class="hover:text-blue-700">Career</a>
+        <a href="gallery.html" class="text-blue-700 font-semibold">Gallery</a>
+        <a href="contact.html" class="hover:text-blue-700">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Gallery Header -->
+  <section class="bg-blue-700 text-white py-10 px-4 text-center">
+    <h2 class="text-3xl font-bold mb-2">School Gallery</h2>
+    <p class="text-base md:text-lg max-w-2xl mx-auto">
+      Explore moments from school events, achievements, and celebrations!
+    </p>
+  </section>
+
+  <!-- Image Grid -->
+  <section class="py-12 px-4 bg-white">
+    <div class="max-w-6xl mx-auto">
+      <h3 class="text-2xl font-semibold mb-6 text-center">Photo Gallery</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <!-- Replace src values with your own images from assets/images -->
+        <img src="assets/images/photo1.jpg" alt="School Event 1" class="w-full rounded shadow" />
+        <img src="assets/images/photo2.jpg" alt="School Event 2" class="w-full rounded shadow" />
+        <img src="assets/images/photo3.jpg" alt="Annual Day" class="w-full rounded shadow" />
+        <img src="assets/images/photo4.jpg" alt="Science Fair" class="w-full rounded shadow" />
+        <img src="assets/images/photo5.jpg" alt="Sports Meet" class="w-full rounded shadow" />
+        <img src="assets/images/photo6.jpg" alt="Students Activity" class="w-full rounded shadow" />
+      </div>
+    </div>
+  </section>
+
+  <!-- YouTube Videos -->
+  <section class="py-12 px-4 bg-gray-50">
+    <div class="max-w-5xl mx-auto">
+      <h3 class="text-2xl font-semibold mb-6 text-center">Video Highlights</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Replace with actual YouTube video links -->
+        <div class="aspect-w-16 aspect-h-9">
+          <iframe class="w-full rounded shadow"
+                  src="https://www.youtube.com/embed/ScMzIvxBSi4"
+                  title="Annual Day Celebration"
+                  frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div class="aspect-w-16 aspect-h-9">
+          <iframe class="w-full rounded shadow"
+                  src="https://www.youtube.com/embed/tgbNymZ7vqY"
+                  title="Science Fair Highlights"
+                  frameborder="0" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-6 text-center text-sm px-4">
+    <p>&copy; 2025 My School. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
