@@ -1,3 +1,8 @@
+// ✅ Enable App Check debug token in local dev (SAFE for localhost only)
+if (location.hostname === "localhost") {
+  self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+}
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
   getAuth,
@@ -14,7 +19,7 @@ import {
   ReCaptchaV3Provider
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app-check.js";
 
-// ✅ Initialize Firebase
+// 🔐 Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyBC0aHWAW6mh8uOZ6ZOFdjP7YCWkWKC9QM",
   authDomain: "loginsys-62057.firebaseapp.com",
@@ -27,10 +32,9 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-// ✅ App Check (for production use)
-// 🔁 Replace with your actual **site key** from reCAPTCHA v3
-const appCheck = initializeAppCheck(app, {
-  provider: new ReCaptchaV3Provider("6LdMPnsrAAAAAKCetxe591GRjUmj8XE9FNjSFRfR"),
+// ✅ Setup App Check with reCAPTCHA v3 for production
+initializeAppCheck(app, {
+  provider: new ReCaptchaV3Provider("6LdMPnsrAAAAAKCetxe591GRjUmj8XE9FNjSFRfR"), // ✅ Your site key
   isTokenAutoRefreshEnabled: true
 });
 
@@ -61,22 +65,17 @@ window.showToast = function (message, type = "error") {
 window.loginUser = async function () {
   const email = document.getElementById("loginEmail").value.trim();
   const password = document.getElementById("loginPassword").value.trim();
-
-  if (!email || !password) {
-    showToast("⚠️ Please enter both email and password.");
-    return;
-  }
-
+  if (!email || !password) return showToast("⚠️ Enter both email and password.");
   try {
     await signInWithEmailAndPassword(auth, email, password);
     localStorage.setItem("authenticated", "true");
     showToast("✅ Login successful!", "success");
-    setTimeout(() => window.location.href = "admin.html", 1000);
+    setTimeout(() => (window.location.href = "admin.html"), 1000);
   } catch (error) {
     let message = "❌ Login failed.";
     if (error.code === "auth/user-not-found") message = "❌ No account found.";
     else if (error.code === "auth/wrong-password") message = "❌ Incorrect password.";
-    else if (error.code === "auth/too-many-requests") message = "🚫 Too many attempts. Try again later.";
+    else if (error.code === "auth/too-many-requests") message = "🚫 Too many attempts.";
     showToast(message);
   }
 };
@@ -85,21 +84,16 @@ window.loginUser = async function () {
 window.signupUser = async function () {
   const email = document.getElementById("loginEmail").value.trim();
   const password = document.getElementById("loginPassword").value.trim();
-
-  if (!email || !password) {
-    showToast("⚠️ Please enter both email and password.");
-    return;
-  }
-
+  if (!email || !password) return showToast("⚠️ Enter both email and password.");
   try {
     await createUserWithEmailAndPassword(auth, email, password);
     localStorage.setItem("authenticated", "true");
     showToast("✅ Account created!", "success");
-    setTimeout(() => window.location.href = "admin.html", 1000);
+    setTimeout(() => (window.location.href = "admin.html"), 1000);
   } catch (error) {
     let message = "❌ Signup failed.";
-    if (error.code === "auth/email-already-in-use") message = "⚠️ Email already in use.";
-    else if (error.code === "auth/invalid-email") message = "⚠️ Invalid email address.";
+    if (error.code === "auth/email-already-in-use") message = "⚠️ Email in use.";
+    else if (error.code === "auth/invalid-email") message = "⚠️ Invalid email.";
     else if (error.code === "auth/weak-password") message = "⚠️ Weak password.";
     showToast(message);
   }
@@ -111,27 +105,27 @@ window.logoutUser = async function () {
     await signOut(auth);
     localStorage.removeItem("authenticated");
     showToast("✅ Logged out!", "success");
-    setTimeout(() => window.location.href = "login.html", 500);
-  } catch (error) {
+    setTimeout(() => (window.location.href = "login.html"), 500);
+  } catch {
     showToast("❌ Logout failed.");
   }
 };
 
 // ✅ Google Sign-In
 window.googleSignIn = async function () {
-  const provider = new GoogleAuthProvider();
   try {
+    const provider = new GoogleAuthProvider();
     const result = await signInWithPopup(auth, provider);
     localStorage.setItem("authenticated", "true");
     showToast("✅ Signed in with Google!", "success");
-    setTimeout(() => window.location.href = "admin.html", 1000);
+    setTimeout(() => (window.location.href = "admin.html"), 1000);
   } catch (error) {
-    console.error("❌ Google Sign-In error:", error.message);
+    console.error("Google Sign-In error:", error.message);
     showToast("❌ Google Sign-In failed.");
   }
 };
 
-// ✅ Protect admin.html
+// ✅ Protect admin page
 if (window.location.pathname.includes("admin.html")) {
   onAuthStateChanged(auth, (user) => {
     if (!user || localStorage.getItem("authenticated") !== "true") {
